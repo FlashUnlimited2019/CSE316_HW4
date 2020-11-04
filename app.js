@@ -16,7 +16,7 @@ app.get("/",(req,res) => {
 });
 
 app.get("/schedule", (req,res)=>{
-  writeSchedule()
+  writeSchedule(req,res);
 });
 
 port = process.env.PORT || 3000;
@@ -127,9 +127,9 @@ function writeSearch(req,res){
         Wait Cap: ` + item.WaitCap +`
         Combined Description: ` + item.CombDesc +`
         Combined Enrollment Cap: ` + item.CombEnrollCap + ` <form action="/schedule" method="get">
-        <buttin name = "add" value="` + item.id + `"> Add Class </button></form> </pre>`;
+        <button name = "add" value="` + item.id + `"> Add Class </button></form> </pre>`;
       }
-      res.write(html + "\n\n<body>\n</html>");
+      res.write(html + "\n\n</body>\n</html>");
       res.end();
   });
 
@@ -137,7 +137,7 @@ function writeSearch(req,res){
 
 function writeSchedule(req, res){
   let query = url.parse(req.url, true).query;
-  let addQuery = `INSERT INTO saved SELECT * FROM courses WHERE coueses.id="` + query.add + `";`
+  let addQuery = `INSERT INTO saved SELECT * FROM courses WHERE courses.id="` + query.add + `";`
 
   let html = `
     <!DOCTYPE html>
@@ -156,7 +156,7 @@ function writeSchedule(req, res){
     </head>
     <body>
         <h1> Schedule </h1><br>
-        <a herf="/"><b>Return to Search</b></a>
+        <a href="/"><b>Return to Search</b></a>
         <br><br>
 
         <table>
@@ -176,7 +176,7 @@ function writeSchedule(req, res){
           </tr>
         </table>
       </body>
-      <html>
+      </html>
     `;
   
   con.query(addQuery, function(err, result){

@@ -193,12 +193,12 @@ function writeSchedule(req, res){
           con.query(constructSQLDayCommand("TH"),function(err, result){
             if (err) throw err;
             html = html.replace("<td> Thu </td>", getDay(result, "THU"));
-              con.query(constructSQLDayCommand("F"),function(err, result){
-                if (err) throw err;
-                html = html.replace("<td> Fri </td>", getDay(result, "FRI"));
-                res.write(html + "\n\n<body>\n</html>");
-                res.end();
-              });
+            con.query(constructSQLDayCommand("F"),function(err, result){
+              if (err) throw err;
+              html = html.replace("<td> Fri </td>", getDay(result, "FRI"));
+              res.write(html + "\n\n<body>\n</html>");
+              res.end();
+            });
           });
         });
       });
@@ -220,11 +220,15 @@ function getDay(SQLResult, tableHeader){
                         item.Instructor + "<br><br>" +
                         "<br/><br/>";
   }
-  
-
+  return retStr + "</td>";
 }
 
-
+function constructSQLDayCommand(search) {
+  var sql = `SELECT * FROM saved 
+            WHERE Days    LIKE '%` + search + `%'
+            ORDER BY StartTimeInternal;`;
+  return sql;          
+}
 
 
 

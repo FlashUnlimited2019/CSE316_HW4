@@ -42,7 +42,7 @@ function writeSearch(req,res){
 <body>
   <h1>Spring 2021 CSE Class Find </h1><br>
   <form method="get" action = "/">
-    <input type="text" name="search" value="">
+    <input type="text" name="search" value=""></input>
     <b>in</b>
     <select name="filter">
       <option value="allFields">All Field</opiton>
@@ -52,10 +52,10 @@ function writeSearch(req,res){
       <option value="day">Day</opiton>
       <option value="time">Time</opiton>
     </select>
-    <input type="submit" value="Submit">
+    <input type="submit" value="Submit"></input>
     <br>
     Example searches: 316, fodor, 2:30 PM, NW
-  </from>
+  </form>
   <br><br>
   `;
 
@@ -108,10 +108,12 @@ function writeSearch(req,res){
   }
   con.query(sql, function(err,result){
     if(err) throw err;
+    // html = "";
     for(let item of result){
+      
       html += `
-      <buttem type="button" class="toggle"> CSE ` + item.Course + `-` +
-      item.CourseName + `-` + item.Component + ` - Section` + item.Section + `</button>
+      <div type="button" class="toggle"> CSE ` + item.Course + `-` +
+      item.CourseName + `-` + item.Component + ` - Section` + item.Section + `</div>
       <pre>
         Days: ` + item.Days + `
         Start Time: ` + item.StartTime + `
@@ -128,7 +130,7 @@ function writeSearch(req,res){
         Combined Description: ` + item.CombDesc +`
         Combined Enrollment Cap: ` + item.CombEnrollCap + ` <form action="/schedule" method="get">
         <button name = "add" value="` + item.id + `"> Add Class </button></form> </pre>`;
-      }
+    }
       res.write(html + "\n\n</body>\n</html>");
       res.end();
   });
